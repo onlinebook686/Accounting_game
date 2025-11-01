@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ডাবল এন্ট্রি অ্যাকাউন্টিং গেম 🎮</title>
+<style>
+  :root {
+    --primary: #1e3a8a;
+    --secondary: #3b82f6;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --light: #f8fafc;
+    --dark: #1e293b;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Noto Sans Bengali', 'SolaimanLipi', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* Header */
+  header {
+    background: var(--primary);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  /* Cards */
+  .card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border: 1px solid #e2e8f0;
+  }
+
+  /* Forms */
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--secondary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+
+  .btn-success {
+    background: var(--success);
+    color: white;
+  }
+
+  .btn-danger {
+    background: var(--danger);
+    color: white;
+  }
+
+  .btn-outline {
+    background: transparent;
+    border: 2px solid var(--primary);
+    color: var(--primary);
+  }
+
+  /* Image Preview */
+  .image-preview {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--secondary);
+    margin: 1rem auto;
+    display: block;
+  }
+
+  /* Game Elements */
+  .transaction-box {
+    background: var(--light);
+    padding: 1.5rem;
+    border-radius: 10px;
+    border-left: 4px solid var(--primary);
+    margin: 1rem 0;
+  }
+
+  .score-display {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary);
+    text-align: center;
+    margin: 1rem 0;
+  }
+
+  .account-select {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  /* Tables */
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  }
+
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  th {
+    background: var(--light);
+    font-weight: 600;
+    color: var(--dark);
+  }
+
+  tr:hover {
+    background: #f8fafc;
+  }
+
+  /* Screens */
+  .screen {
+    display: none;
+  }
+
+  .screen.active {
+    display: block;
+  }
+
+  /* Navigation */
+  .nav-tabs {
+    display: flex;
+    background: var(--light);
+    border-radius: 10px;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .nav-tab {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+  }
+
+  .nav-tab.active {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* Leaderboard */
+  .leaderboard-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+    background: white;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+  }
+
+  .leaderboard-rank {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 1rem;
+  }
+
+  .leaderboard-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+    border: 3px solid var(--secondary);
+  }
+
+  .leaderboard-info {
+    flex: 1;
+  }
+
+  .leaderboard-score {
+    font-weight: bold;
+    color: var(--primary);
+    font-size: 1.2rem;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 10px;
+    }
+    
+    .card {
+      padding: 1rem;
+    }
+    
+    .account-select {
+      grid-template-columns: 1fr;
+    }
+    
+    .nav-tabs {
+      flex-direction: column;
+    }
+    
+    .nav-tab {
+      margin-bottom: 0.5rem;
+    }
+    
+    header h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .btn {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+    
+    .leaderboard-item {
+      flex-direction: column;
+      text-align: center;
+    }
+    
+    .leaderboard-rank,
+    .leaderboard-avatar {
+      margin-right: 0;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  /* Utility Classes */
+  .text-center { text-align: center; }
+  .text-success { color: var(--success); }
+  .text-danger { color: var(--danger); }
+  .mb-3 { margin-bottom: 1rem; }
+  .mt-3 { margin-top: 1rem; }
+  .d-none { display: none; }
+  .d-flex { display: flex; }
+  .justify-center { justify-content: center; }
+  .align-center { align-items: center; }
+
+  /* Loading Spinner */
+  .spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 2s linear infinite;
+    margin: 1rem auto;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>📘 ডাবল এন্ট্রি অ্যাকাউন্টিং গেম</h1>
+    <p>অ্যাকাউন্টিং শিখুন মজার মাধ্যমে!</p>
+  </header>
+
+  <!-- Welcome Screen -->
+  <div id="welcomeScreen" class="screen active">
+    <div class="card text-center">
+      <h2>🎮 স্বাগতম!</h2>
+      <p class="mb-3">ডাবল এন্ট্রি অ্যাকাউন্টিং শিখতে এই ইন্টারেক্টিভ গেমটি খেলুন</p>
+      <div class="d-flex justify-center">
+        <button class="btn btn-primary" onclick="showScreen('loginScreen')">লগইন</button>
+        <button class="btn btn-outline" onclick="showScreen('registerScreen')">রেজিস্ট্রেশন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Registration Screen -->
+  <div id="registerScreen" class="screen">
+    <div class="card">
+      <h2 class="text-center">📝 রেজিস্ট্রেশন</h2>
+      <form id="registerForm" onsubmit="registerUser(event)">
+        <div class="form-group">
+          <label class="form-label">নাম</label>
+          <input type="text" class="form-control" id="regName" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">ইমেইল</label>
+          <input type="email" class="form-control" id="regEmail" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">পাসওয়ার্ড</label>
+          <input type="password" class="form-control" id="regPassword" required minlength="6">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">প্রোফাইল ছবি</label>
+          <input type="file" class="form-control" id="regImage" accept="image/*" onchange="previewImage(event, 'regPreview')">
+          <img id="regPreview" class="image-preview d-none">
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%">রেজিস্ট্রেশন সম্পন্ন করুন</button>
+      </form>
+      
+      <p class="text-center mt-3">
+        ইতিমধ্যে অ্যাকাউন্ট আছে? 
+        <a href="#" onclick="showScreen('loginScreen')" style="color: var(--primary); text-decoration: none;">লগইন করুন</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Login Screen -->
+  <div id="loginScreen" class="screen">
+    <div class="card">
+      <h2 class="text-center">🔐 লগইন</h2>
+      <form id="loginForm" onsubmit="loginUser(event)">
+        <div class="form-group">
+          <label class="form-label">ইমেইল</label>
+          <input type="email" class="form-control" id="loginEmail" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">পাসওয়ার্ড</label>
+          <input type="password" class="form-control" id="loginPassword" required>
+        </div>
+        
+        <button type="submit" class="btn btn-primary" style="width: 100%">লগইন করুন</button>
+      </form>
+      
+      <p class="text-center mt-3">
+        নতুন ব্যবহারকারী? 
+        <a href="#" onclick="showScreen('registerScreen')" style="color: var(--primary); text-decoration: none;">রেজিস্ট্রেশন করুন</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="gameScreen" class="screen">
+    <div class="nav-tabs">
+      <div class="nav-tab active" onclick="showGameTab('play')">🎮 খেলুন</div>
+      <div class="nav-tab" onclick="showGameTab('journal')">📜 জার্নাল</div>
+      <div class="nav-tab" onclick="showGameTab('reports')">📊 রিপোর্ট</div>
+    </div>
+
+    <!-- Play Tab -->
+    <div id="playTab" class="game-tab active">
+      <div class="card">
+        <div class="d-flex justify-center align-center mb-3">
+          <img id="playerAvatar" class="image-preview" style="width: 80px; height: 80px;">
+          <div style="margin-left: 1rem;">
+            <h3 id="playerNameDisplay"></h3>
+            <div class="score-display" id="currentScore">0</div>
+          </div>
+        </div>
+
+        <div class="transaction-box">
+          <h4>লেনদেন:</h4>
+          <p id="transactionText" style="font-size: 1.2rem; font-weight: bold;"></p>
+          <p id="transactionAmount" style="font-size: 1.1rem; color: var(--primary);"></p>
+        </div>
+
+        <div class="account-select">
+          <div>
+            <label class="form-label">ডেবিট অ্যাকাউন্ট</label>
+            <select class="form-control" id="debitSelect">
+              <option value="">সিলেক্ট করুন</option>
+            </select>
+          </div>
+          <div>
+            <label class="form-label">ক্রেডিট অ্যাকাউন্ট</label>
+            <select class="form-control" id="creditSelect">
+              <option value="">সিলেক্ট করুন</option>
+            </select>
+          </div>
+        </div>
+
+        <button class="btn btn-success" onclick="checkAnswer()" style="width: 100%">জমা দিন</button>
+        
+        <div id="resultMessage" class="text-center mt-3" style="min-height: 40px;"></div>
+
+        <div class="text-center mt-3">
+          <button class="btn btn-outline" onclick="skipTransaction()">স্কিপ করুন</button>
+          <button class="btn btn-danger" onclick="endGame()">গেম শেষ করুন</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Journal Tab -->
+    <div id="journalTab" class="game-tab">
+      <div class="card">
+        <h3>📜 জার্নাল এন্ট্রি</h3>
+        <div class="table-responsive">
+          <table id="journalTable">
+            <thead>
+              <tr>
+                <th>তারিখ</th>
+                <th>বিবরণ</th>
+                <th>ডেবিট</th>
+                <th>ক্রেডিট</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports Tab -->
+    <div id="reportsTab" class="game-tab">
+      <div class="card">
+        <h3>📊 ট্রায়াল ব্যালেন্স</h3>
+        <div class="table-responsive">
+          <table id="trialBalanceTable">
+            <thead>
+              <tr>
+                <th>অ্যাকাউন্ট</th>
+                <th>ডেবিট</th>
+                <th>ক্রেডিট</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📈 আয় বিবরণী</h3>
+        <div class="table-responsive">
+          <table id="incomeStatementTable">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>💰 ভারসাম্য পত্র</h3>
+        <div class="table-responsive">
+          <table id="balanceSheetTable">
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaderboard Screen -->
+  <div id="leaderboardScreen" class="screen">
+    <div class="card">
+      <h2 class="text-center">🏆 লিডারবোর্ড</h2>
+      <div id="leaderboardList">
+        <!-- Leaderboard items will be loaded here -->
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn btn-primary" onclick="restartGame()">আবার খেলুন</button>
+        <button class="btn btn-outline" onclick="logout()">লগআউট</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="screen">
+    <div class="card text-center">
+      <div class="spinner"></div>
+      <p>লোড হচ্ছে...</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// Configuration
+const CONFIG = {
+  APP_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbweLgG_E8RZUdI263eL-AMvMoeo_I9GXFner4he_JdV90tf4gSM1531VsCJc2PFV64f/exec', // Replace with your Google Apps Script URL
+  ACCOUNTS: [
+    'Cash', 'Bank', 'Accounts Receivable', 'Inventory', 'Equipment',
+    'Accounts Payable', 'Loan', 'Capital', 'Sales Revenue', 'Service Revenue',
+    'Cost of Goods Sold', 'Rent Expense', 'Salary Expense', 'Utility Expense'
+  ]
+};
+
+// Game State
+let gameState = {
+  currentUser: null,
+  currentTransaction: null,
+  score: 0,
+  transactions: [],
+  journalEntries: [],
+  accountBalances: {},
+  currentTransactionIndex: 0
+};
+
+// Sample Transactions (You can add more)
+const TRANSACTIONS = [
+  {
+    text: "নগদে পণ্য বিক্রি",
+    debit: "Cash",
+    credit: "Sales Revenue",
+    amount: 5000,
+    description: "নগদে পণ্য বিক্রি ৫,০০০ টাকা"
+  },
+  {
+    text: "ভাড়া পরিশোধ",
+    debit: "Rent Expense",
+    credit: "Cash",
+    amount: 2000,
+    description: "অফিস ভাড়া পরিশোধ ২,০০০ টাকা"
+  },
+  {
+    text: "ব্যাংক থেকে নগদ উত্তোলন",
+    debit: "Cash",
+    credit: "Bank",
+    amount: 10000,
+    description: "ব্যাংক থেকে নগদ উত্তোলন ১০,০০০ টাকা"
+  },
+  {
+    text: "যন্ত্রপাতি ক্রয়",
+    debit: "Equipment",
+    credit: "Cash",
+    amount: 15000,
+    description: "অফিস যন্ত্রপাতি ক্রয় ১৫,০০০ টাকা"
+  },
+  {
+    text: "বেতন প্রদান",
+    debit: "Salary Expense",
+    credit: "Cash",
+    amount: 8000,
+    description: "কর্মচারী বেতন প্রদান ৮,০০০ টাকা"
+  },
+  {
+    text: "লোন গ্রহণ",
+    debit: "Cash",
+    credit: "Loan",
+    amount: 50000,
+    description: "ব্যাংক থেকে লোন গ্রহণ ৫০,০০০ টাকা"
+  },
+  {
+    text: "মালিক বিনিয়োগ",
+    debit: "Cash",
+    credit: "Capital",
+    amount: 100000,
+    description: "মালিক কর্তৃক ব্যবসায় বিনিয়োগ ১,০০,০০০ টাকা"
+  },
+  {
+    text: "উপাদান ক্রয়",
+    debit: "Inventory",
+    credit: "Accounts Payable",
+    amount: 25000,
+    description: "উপাদান ক্রয় ২৫,০০০ টাকা (credit)"
+  },
+  {
+    text: "সেবা আয়",
+    debit: "Accounts Receivable",
+    credit: "Service Revenue",
+    amount: 15000,
+    description: "সেবা প্রদান আয় ১৫,০০০ টাকা (credit)"
+  },
+  {
+    text: "বিদ্যুৎ বিল পরিশোধ",
+    debit: "Utility Expense",
+    credit: "Cash",
+    amount: 3000,
+    description: "বিদ্যুৎ বিল পরিশোধ ৩,০০০ টাকা"
+  }
+];
+
+// Initialize the game
+function initGame() {
+  populateAccountDropdowns();
+  initializeAccountBalances();
+  loadTransactions();
+}
+
+// Screen Management
+function showScreen(screenId) {
+  document.querySelectorAll('.screen').forEach(screen => {
+    screen.classList.remove('active');
+  });
+  document.getElementById(screenId).classList.add('active');
+}
+
+function showGameTab(tabId) {
+  document.querySelectorAll('.game-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.classList.remove('active');
+  });
+  
+  document.getElementById(tabId + 'Tab').classList.add('active');
+  document.querySelector(`.nav-tab:nth-child(${tabId === 'play' ? 1 : tabId === 'journal' ? 2 : 3})`).classList.add('active');
+}
+
+// Image Preview
+function previewImage(event, previewId) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const preview = document.getElementById(previewId);
+      preview.src = e.target.result;
+      preview.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Google Apps Script Integration
+async function callGoogleAppsScript(functionName, data = {}) {
+  try {
+    const response = await fetch(CONFIG.APP_SCRIPT_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: functionName,
+        ...data
+      })
+    });
+    
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Error calling Google Apps Script:', error);
+    return { success: false, error: error.message };
+  }
+}
+
+// User Registration
+async function registerUser(event) {
+  event.preventDefault();
+  
+  const name = document.getElementById('regName').value;
+  const email = document.getElementById('regEmail').value;
+  const password = document.getElementById('regPassword').value;
+  const image = document.getElementById('regPreview').src;
+  
+  if (!image || image.includes('d-none')) {
+    alert('অনুগ্রহ করে একটি প্রোফাইল ছবি আপলোড করুন।');
+    return;
+  }
+  
+  showLoading(true);
+  
+  const result = await callGoogleAppsScript('registerUser', {
+    name,
+    email,
+    password,
+    image
+  });
+  
+  showLoading(false);
+  
+  if (result.success) {
+    alert('রেজিস্ট্রেশন সফল! আপনি এখন লগইন করতে পারেন।');
+    showScreen('loginScreen');
+  } else {
+    alert('রেজিস্ট্রেশন ব্যর্থ: ' + (result.error || 'অজানা ত্রুটি'));
+  }
+}
+
+// User Login
+async function loginUser(event) {
+  event.preventDefault();
+  
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  
+  showLoading(true);
+  
+  const result = await callGoogleAppsScript('loginUser', {
+    email,
+    password
+  });
+  
+  showLoading(false);
+  
+  if (result.success) {
+    gameState.currentUser = result.user;
+    document.getElementById('playerNameDisplay').textContent = result.user.name;
+    document.getElementById('playerAvatar').src = result.user.image;
+    document.getElementById('playerAvatar').classList.remove('d-none');
+    
+    initGame();
+    showScreen('gameScreen');
+    loadNextTransaction();
+  } else {
+    alert('লগইন ব্যর্থ: ' + (result.message || 'ইমেইল বা পাসওয়ার্ড ভুল'));
+  }
+}
+
+// Game Functions
+function populateAccountDropdowns() {
+  const debitSelect = document.getElementById('debitSelect');
+  const creditSelect = document.getElementById('creditSelect');
+  
+  debitSelect.innerHTML = '<option value="">সিলেক্ট করুন</option>';
+  creditSelect.innerHTML = '<option value="">সিলেক্ট করুন</option>';
+  
+  CONFIG.ACCOUNTS.forEach(account => {
+    debitSelect.innerHTML += `<option value="${account}">${account}</option>`;
+    creditSelect.innerHTML += `<option value="${account}">${account}</option>`;
+  });
+}
+
+function initializeAccountBalances() {
+  CONFIG.ACCOUNTS.forEach(account => {
+    gameState.accountBalances[account] = { debit: 0, credit: 0 };
+  });
+}
+
+function loadTransactions() {
+  gameState.transactions = [...TRANSACTIONS].sort(() => Math.random() - 0.5);
+}
+
+function loadNextTransaction() {
+  if (gameState.currentTransactionIndex >= gameState.transactions.length) {
+    gameState.currentTransactionIndex = 0;
+    gameState.transactions = [...gameState.transactions].sort(() => Math.random() - 0.5);
+  }
+  
+  gameState.currentTransaction = gameState.transactions[gameState.currentTransactionIndex];
+  
+  document.getElementById('transactionText').textContent = gameState.currentTransaction.description;
+  document.getElementById('transactionAmount').textContent = `পরিমাণ: ${gameState.currentTransaction.amount.toLocaleString()} টাকা`;
+  
+  document.getElementById('debitSelect').value = '';
+  document.getElementById('creditSelect').value = '';
+  document.getElementById('resultMessage').innerHTML = '';
+  
+  gameState.currentTransactionIndex++;
+}
+
+function checkAnswer() {
+  const selectedDebit = document.getElementById('debitSelect').value;
+  const selectedCredit = document.getElementById('creditSelect').value;
+  const resultMessage = document.getElementById('resultMessage');
+  
+  if (!selectedDebit || !selectedCredit) {
+    resultMessage.innerHTML = '<span style="color: var(--warning);">দুইটি অ্যাকাউন্টই সিলেক্ট করুন</span>';
+    return;
+  }
+  
+  if (selectedDebit === selectedCredit) {
+    resultMessage.innerHTML = '<span style="color: var(--danger);">ডেবিট এবং ক্রেডিট একই অ্যাকাউন্ট হতে পারে না</span>';
+    return;
+  }
+  
+  const correctDebit = gameState.currentTransaction.debit;
+  const correctCredit = gameState.currentTransaction.credit;
+  
+  if (selectedDebit === correctDebit && selectedCredit === correctCredit) {
+    gameState.score += 10;
+    resultMessage.innerHTML = '<span style="color: var(--success);">✅ সঠিক উত্তর! +10 পয়েন্ট</span>';
+    
+    // Add to journal
+    addJournalEntry(
+      gameState.currentTransaction.description,
+      correctDebit,
+      correctCredit,
+      gameState.currentTransaction.amount
+    );
+    
+    // Update account balances
+    updateAccountBalances(correctDebit, correctCredit, gameState.currentTransaction.amount);
+    
+    // Update UI
+    updateGameUI();
+    
+  } else {
+    gameState.score = Math.max(0, gameState.score - 5);
+    resultMessage.innerHTML = `<span style="color: var(--danger);">❌ ভুল! সঠিক উত্তর: ${correctDebit} / ${correctCredit}</span>`;
+  }
+  
+  document.getElementById('currentScore').textContent = gameState.score;
+  
+  setTimeout(() => {
+    loadNextTransaction();
+  }, 2000);
+}
+
+function skipTransaction() {
+  gameState.score = Math.max(0, gameState.score - 2);
+  document.getElementById('currentScore').textContent = gameState.score;
+  document.getElementById('resultMessage').innerHTML = '<span style="color: var(--warning);">স্কিপ করা হয়েছে! -2 পয়েন্ট</span>';
+  
+  setTimeout(() => {
+    loadNextTransaction();
+  }, 1000);
+}
+
+function addJournalEntry(description, debit, credit, amount) {
+  const entry = {
+    date: new Date().toLocaleDateString('bn-BD'),
+    description,
+    debit,
+    credit,
+    amount,
+    timestamp: new Date().getTime()
+  };
+  
+  gameState.journalEntries.push(entry);
+  updateJournalTable();
+}
+
+function updateAccountBalances(debitAccount, creditAccount, amount) {
+  gameState.accountBalances[debitAccount].debit += amount;
+  gameState.accountBalances[creditAccount].credit += amount;
+  updateReports();
+}
+
+function updateGameUI() {
+  updateJournalTable();
+  updateReports();
+}
+
+function updateJournalTable() {
+  const tbody = document.querySelector('#journalTable tbody');
+  tbody.innerHTML = '';
+  
+  gameState.journalEntries.forEach(entry => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${entry.date}</td>
+      <td>${entry.description}</td>
+      <td>${entry.debit} ${entry.amount.toLocaleString()}</td>
+      <td>${entry.credit} ${entry.amount.toLocaleString()}</td>
+    `;
+    tbody.appendChild(row);
+  });
+}
+
+function updateReports() {
+  updateTrialBalance();
+  updateIncomeStatement();
+  updateBalanceSheet();
+}
+
+function updateTrialBalance() {
+  const tbody = document.querySelector('#trialBalanceTable tbody');
+  tbody.innerHTML = '';
+  
+  let totalDebit = 0;
+  let totalCredit = 0;
+  
+  CONFIG.ACCOUNTS.forEach(account => {
+    const balance = gameState.accountBalances[account];
+    if (balance.debit > 0 || balance.credit > 0) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${account}</td>
+        <td>${balance.debit.toLocaleString()}</td>
+        <td>${balance.credit.toLocaleString()}</td>
+      `;
+      tbody.appendChild(row);
+      
+      totalDebit += balance.debit;
+      totalCredit += balance.credit;
+    }
+  });
+  
+  // Add total row
+  const totalRow = document.createElement('tr');
+  totalRow.style.fontWeight = 'bold';
+  totalRow.innerHTML = `
+    <td>মোট</td>
+    <td>${totalDebit.toLocaleString()}</td>
+    <td>${totalCredit.toLocaleString()}</td>
+  `;
+  tbody.appendChild(totalRow);
+}
+
+function updateIncomeStatement() {
+  const tbody = document.querySelector('#incomeStatementTable tbody');
+  tbody.innerHTML = '';
+  
+  const revenue = gameState.accountBalances['Sales Revenue'].credit + 
+                 gameState.accountBalances['Service Revenue'].credit;
+  
+  const expenses = gameState.accountBalances['Rent Expense'].debit +
+                  gameState.accountBalances['Salary Expense'].debit +
+                  gameState.accountBalances['Utility Expense'].debit +
+                  gameState.accountBalances['Cost of Goods Sold'].debit;
+  
+  const netIncome = revenue - expenses;
+  
+  tbody.innerHTML = `
+    <tr>
+      <td>আয়:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="padding-left: 20px;">বিক্রয় আয়</td>
+      <td>${gameState.accountBalances['Sales Revenue'].credit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td style="padding-left: 20px;">সেবা আয়</td>
+      <td>${gameState.accountBalances['Service Revenue'].credit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td><strong>মোট আয়</strong></td>
+      <td><strong>${revenue.toLocaleString()}</strong></td>
+    </tr>
+    <tr>
+      <td>ব্যয়:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td style="padding-left: 20px;">ভাড়া ব্যয়</td>
+      <td>${gameState.accountBalances['Rent Expense'].debit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td style="padding-left: 20px;">বেতন ব্যয়</td>
+      <td>${gameState.accountBalances['Salary Expense'].debit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td style="padding-left: 20px;">উপযোগিতা ব্যয়</td>
+      <td>${gameState.accountBalances['Utility Expense'].debit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td><strong>মোট ব্যয়</strong></td>
+      <td><strong>${expenses.toLocaleString()}</strong></td>
+    </tr>
+    <tr style="background-color: var(--light);">
+      <td><strong>নিট আয়</strong></td>
+      <td><strong>${netIncome.toLocaleString()}</strong></td>
+    </tr>
+  `;
+}
+
+function updateBalanceSheet() {
+  const tbody = document.querySelector('#balanceSheetTable tbody');
+  
+  const assets = gameState.accountBalances['Cash'].debit +
+                gameState.accountBalances['Bank'].debit +
+                gameState.accountBalances['Accounts Receivable'].debit +
+                gameState.accountBalances['Inventory'].debit +
+                gameState.accountBalances['Equipment'].debit;
+  
+  const liabilities = gameState.accountBalances['Accounts Payable'].credit +
+                     gameState.accountBalances['Loan'].credit;
+  
+  const equity = gameState.accountBalances['Capital'].credit;
+  const netIncome = (gameState.accountBalances['Sales Revenue'].credit +
+                    gameState.accountBalances['Service Revenue'].credit) -
+                   (gameState.accountBalances['Rent Expense'].debit +
+                    gameState.accountBalances['Salary Expense'].debit +
+                    gameState.accountBalances['Utility Expense'].debit +
+                    gameState.accountBalances['Cost of Goods Sold'].debit);
+  
+  const totalLiabilitiesEquity = liabilities + equity + netIncome;
+  
+  tbody.innerHTML = `
+    <tr>
+      <th>সম্পদ</th>
+      <th>পরিমাণ</th>
+      <th>দায় ও মালিকানা স্বত্ব</th>
+      <th>পরিমাণ</th>
+    </tr>
+    <tr>
+      <td>নগদ</td>
+      <td>${gameState.accountBalances['Cash'].debit.toLocaleString()}</td>
+      <td>দায়:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>ব্যাংক</td>
+      <td>${gameState.accountBalances['Bank'].debit.toLocaleString()}</td>
+      <td style="padding-left: 20px;">দেনা</td>
+      <td>${gameState.accountBalances['Accounts Payable'].credit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td>প্রাপ্য হিসাব</td>
+      <td>${gameState.accountBalances['Accounts Receivable'].debit.toLocaleString()}</td>
+      <td style="padding-left: 20px;">লোন</td>
+      <td>${gameState.accountBalances['Loan'].credit.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td>মজুদ পণ্য</td>
+      <td>${gameState.accountBalances['Inventory'].debit.toLocaleString()}</td>
+      <td><strong>মোট দায়</strong></td>
+      <td><strong>${liabilities.toLocaleString()}</strong></td>
+    </tr>
+    <tr>
+      <td>যন্ত্রপাতি</td>
+      <td>${gameState.accountBalances['Equipment'].debit.toLocaleString()}</td>
+      <td>মালিকানা স্বত্ব:</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td style="padding-left: 20px;">মূলধন</td>
+      <td>${equity.toLocaleString()}</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td></td>
+      <td style="padding-left: 20px;">নিট আয়</td>
+      <td>${netIncome.toLocaleString()}</td>
+    </tr>
+    <tr style="background-color: var(--light);">
+      <td><strong>মোট সম্পদ</strong></td>
+      <td><strong>${assets.toLocaleString()}</strong></td>
+      <td><strong>মোট দায় ও মালিকানা স্বত্ব</strong></td>
+      <td><strong>${totalLiabilitiesEquity.toLocaleString()}</strong></td>
+    </tr>
+  `;
+}
+
+async function endGame() {
+  if (!gameState.currentUser) return;
+  
+  showLoading(true);
+  
+  const result = await callGoogleAppsScript('saveScore', {
+    userId: gameState.currentUser.id,
+    score: gameState.score,
+    email: gameState.currentUser.email
+  });
+  
+  showLoading(false);
+  
+  if (result.success) {
+    await loadLeaderboard();
+    showScreen('leaderboardScreen');
+  } else {
+    alert('স্কোর সেভ করতে সমস্যা হয়েছে: ' + (result.error || 'অজানা ত্রুটি'));
+  }
+}
+
+async function loadLeaderboard() {
+  showLoading(true);
+  
+  const result = await callGoogleAppsScript('getLeaderboard');
+  
+  showLoading(false);
+  
+  const leaderboardList = document.getElementById('leaderboardList');
+  
+  if (result.success && result.leaderboard) {
+    leaderboardList.innerHTML = '';
+    
+    result.leaderboard.forEach((player, index) => {
+      const rank = index + 1;
+      const rankClass = rank <= 3 ? `style="background: ${rank === 1 ? '#ffd700' : rank === 2 ? '#c0c0c0' : '#cd7f32'};"` : '';
+      
+      const item = document.createElement('div');
+      item.className = 'leaderboard-item';
+      item.innerHTML = `
+        <div class="leaderboard-rank" ${rankClass}>${rank}</div>
+        <img src="${player.image}" alt="${player.name}" class="leaderboard-avatar" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjUiIGZpbGw9IiMxZTNhOGEiLz4KPHN2ZyB4PSIxMiIgeT0iMTIiIHdpZHRoPSIyNiIgaGVpZ2h0PSIyNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CjxwYXRoIGQ9Ik0yMCAyMXYtMmE0IDQgMCAwIDAtNC00SDhhNCA0IDAgMCAwLTQgNHYyIj48L3BhdGg+CjxjaXJjbGUgY3g9IjEyIiBjeT0iNyIgcj0iNCI+PC9jaXJjbGU+Cjwvc3ZnPgo8L3N2Zz4K'">
+        <div class="leaderboard-info">
+          <h4>${player.name}</h4>
+          <p>${player.email}</p>
+        </div>
+        <div class="leaderboard-score">${player.score}</div>
+      `;
+      leaderboardList.appendChild(item);
+    });
+  } else {
+    leaderboardList.innerHTML = '<p style="text-align: center; color: var(--danger);">লিডারবোর্ড লোড করতে সমস্যা হয়েছে</p>';
+  }
+}
+
+function restartGame() {
+  gameState.score = 0;
+  gameState.journalEntries = [];
+  gameState.currentTransactionIndex = 0;
+  initializeAccountBalances();
+  
+  document.getElementById('currentScore').textContent = '0';
+  showScreen('gameScreen');
+  loadNextTransaction();
+}
+
+function logout() {
+  gameState.currentUser = null;
+  showScreen('welcomeScreen');
+}
+
+function showLoading(show) {
+  if (show) {
+    document.getElementById('loadingScreen').classList.add('active');
+  } else {
+    document.getElementById('loadingScreen').classList.remove('active');
+  }
+}
+
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', function() {
+  showScreen('welcomeScreen');
+});
+</script>
+</body>
+</html>
